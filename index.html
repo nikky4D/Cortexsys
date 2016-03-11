@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Cortexsys by joncox123</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Cortexsys</h1>
+      <h2 class="project-tagline">Matlab and Octave GPU Accelerated Deep Learning Toolbox</h2>
+      <a href="https://github.com/joncox123/Cortexsys" class="btn">View on GitHub</a>
+      <a href="https://github.com/joncox123/Cortexsys/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/joncox123/Cortexsys/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="cortexsys-30-user-guide" class="anchor" href="#cortexsys-30-user-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cortexsys 3.0 User Guide</h1>
+
+<h3>
+<a id="february-2016" class="anchor" href="#february-2016" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>February, 2016</h3>
+
+<p><img src="media/cortexsys.png" alt="Cortexsys Logo">
+<img src="media/snl.png" alt="SNL Logo">
+<img src="media/doe.png" alt="DOE Logo"></p>
+
+<hr>
+
+<h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>Cortexsys is a deep learning toolbox for Matlab and GNU Octave 4.0
+intended for researchers and algorithm developers who would like to
+rapidly implement and analyze new algorithms with the Matlab or Octave
+environment. Cortexsys strives to accomplish too goals which are often
+in conflict: (1) Easy to use and learn; (2) Flexible and adaptable for
+research, education and prototyping. If we have achieved this goal, a
+new user should be able to instantly run and understand the examples,
+and eventually dig into and understand the underlying “guts” without
+excessive confusion.</p>
+
+<h2>
+<a id="benefits-of-cortexsys" class="anchor" href="#benefits-of-cortexsys" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Benefits of Cortexsys</h2>
+
+<ul>
+<li>
+<p>Matrix and mathematical oriented language and development
+environment</p>
+
+<ul>
+<li><p>For example, multiplying a matrix and a vector and adding a
+constant is accomplished simply with the commands: A*b+c</p></li>
+<li><p>Completely interpreted language provides easy and fast debugging</p></li>
+<li><p>Interoperability with the wealth of existing toolboxes and code</p></li>
+</ul>
+</li>
+<li>
+<p>Easy to combine various types of neural network layers together</p>
+
+<ul>
+<li>  For example, a convolutional net can feed a recurrent net that
+outputs to a fully connected feed-forward net.</li>
+</ul>
+</li>
+<li><p>Simple support for GPU accelerator cards and cluster computing with
+the Matlab Parallel Computing Toolbox.</p></li>
+<li><p>Explicit implementation of the training and backpropagation
+algorithms that does not use automatic differentiation. This is
+useful for optimization, educational purposes and porting code to
+compiled software or dedicated hardware.</p></li>
+</ul>
+
+<p>At present, Cortexsys implements both standard, feed forward deep neural
+nets (“deep learning”), including convolutional nets, and recurrent
+neural nets. Furthermore, all types can be combined in arbitrary
+ways[^1].</p>
+
+<h2>
+<a id="summary-of-features" class="anchor" href="#summary-of-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary of Features</h2>
+
+<ul>
+<li>
+<p>Layer types</p>
+
+<ul>
+<li><p>Fully connected feed forward</p></li>
+<li><p>Convolutional</p></li>
+<li><p>Average pooling</p></li>
+<li><p>Recurrent</p></li>
+<li><p>Long-short term memory (LSTM)</p></li>
+</ul>
+</li>
+<li>
+<p>Activation functions</p>
+
+<ul>
+<li><p>Sigmoid</p></li>
+<li><p>Hyperbolic tangent</p></li>
+<li><p>Softplus</p></li>
+<li><p>Softmax</p></li>
+<li><p>Linear</p></li>
+<li><p>Rectified linear</p></li>
+<li><p>Leaky rectified linear</p></li>
+</ul>
+</li>
+<li>
+<p>Optimization algorithms</p>
+
+<ul>
+<li><p>Mini-batch gradient descent with momentum</p></li>
+<li><p>ADADELTA gradient descent</p></li>
+<li><p>Mini-batch conjugate gradient with line-search</p></li>
+</ul>
+</li>
+<li>
+<p>Regularization</p>
+
+<ul>
+<li><p>L~2~ norm of weights</p></li>
+<li><p>Dropout</p></li>
+<li><p>De-noising of input</p></li>
+<li><p>Max-norm</p></li>
+<li><p>Sparsity constraints</p></li>
+<li><p>Tied weights (for auto-encoders)</p></li>
+</ul>
+</li>
+<li>
+<p>Learning types</p>
+
+<ul>
+<li><p>Supervised classifiers</p></li>
+<li><p>Unsupervised auto-encoders</p></li>
+<li><p>Sequence prediction (recurrent nets)</p></li>
+<li><p>Unsupervised layer-by-layer pre-training</p></li>
+<li>
+<p>Input maximization for classifiers</p>
+
+<ul>
+<li>  Learn an input that maximizes the activation for a
+particular unit activation, such as the output units. This
+allows us to generate “optical illusions” or to visualize
+what various features may represent.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Examples</p>
+
+<ul>
+<li><p>Deep auto-encoder with pre-training</p></li>
+<li><p>Deep classifier with pre-training</p></li>
+<li><p>Convolutional net for image classification</p></li>
+<li>
+<p>Recurrent network for sequence prediction</p>
+
+<ul>
+<li>  Generate Shakespeare text via random sampling</li>
+</ul>
+</li>
+<li>
+<p>Neural net “optical illusion” generator</p>
+
+<ul>
+<li>  Generate inputs that an MNIST classifier believes are digits
+with &gt;99.9% confidence</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="feature-to-do-list" class="anchor" href="#feature-to-do-list" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature To-do List</h2>
+
+<p>In addition to the features above, the following features may be
+implemented at some point in the future, and will be a useful addition
+to the code base.</p>
+
+<ul>
+<li>
+<p>Layers</p>
+
+<ul>
+<li>  Max pooling layers for convolutional nets</li>
+</ul>
+</li>
+<li>
+<p>Optimization algorithms</p>
+
+<ul>
+<li>  Stochastic Hessian Free Optimization for deep and recurrent nets</li>
+</ul>
+</li>
+<li>
+<p>Regularization</p>
+
+<ul>
+<li>  Mini-batch normalization of layer outputs</li>
+</ul>
+</li>
+<li>
+<p>Examples</p>
+
+<ul>
+<li>  Image caption generator with recurrent net</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="initialization-and-startup" class="anchor" href="#initialization-and-startup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initialization and Startup</h1>
+
+<p>Before launching Cortexsys, it is necessary to compile the CUDA routines
+if convolutional neural nets are being used and GPU acceleration is
+desired. The MMX routines must be compiled if using recurrent networks
+with any network type, unless GPU acceleration is being used. These
+routines accelerate Matlab’s built in functions for specific operations
+where built-in routines were either unavailable or did not have the
+desired performance.</p>
+
+<p>To compile these routines, you must setup your MEX compiler (see Matlab
+documentation<a href="http://www.mathworks.com/support/compilers/R2015b/index.html">^2</a>). To compile the CUDA routines for convolutional nets,
+you must also have the NVIDIA CUDA Toolkit<a href="https://developer.nvidia.com/cuda-toolkit">^3</a> installed.</p>
+
+<ol>
+<li><p>Enter the nn_core/mmx directory and run the build_mmx.m script.</p></li>
+<li><p>Enter the nn_core/cuda directory and run the
+cudaBuild_and_Test.m script. This will compile the cuda routines
+and perform some numerical tests for accuracy and performance.</p></li>
+</ol>
+
+<p>Before calling any Cortexsys routines, you must also add the necessary
+directories to your Matlab path. The examples use the following code to
+accomplish this. You must adjust the root part of the path ‘../../’ to
+reflect the location of the Cortexsys directory (e.g.
+‘~/user/Cortexsys/’).</p>
+
+<p>addpath('../../nn_gui');</p>
+
+<p>addpath('../../nn_core');</p>
+
+<p>addpath('../../nn_core/cuda');</p>
+
+<p>addpath('../../nn_core/mmx');</p>
+
+<p>addpath('../../nn_core/Optimizers');</p>
+
+<p>addpath('../../nn_core/Activations');</p>
+
+<p>addpath('../../nn_core/Wrappers');</p>
+
+<p>addpath('../../nn_core/ConvNet');</p>
+
+<p>Next, you must initialize Cortexsys and setup some basic parameters that
+are stored in the definitions object. This object must be passed to many
+of the Cortexsys objects and routines. Call the definitions constructor:</p>
+
+<p>defs = definitions(PRECISION, useGPU, whichGPU, plotOn);</p>
+
+<p>Here, PRECISION is a string that may be either ‘double’ or ‘single’.
+Also, useGPU and plotOn are booleans (set to true or false) that control
+whether plotting is enabled and if a GPU should be used. If a GPU is
+used, whichGPU is the number of the GPU card to use.</p>
+
+<h1>
+<a id="input-and-target-output-data" class="anchor" href="#input-and-target-output-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input and Target (Output) Data</h1>
+
+<p>Input and output data (as well as layer activations and some other types
+of data) is stored in a varObj object. All objects in Cortexsys are
+“handle objects”, which are simply pointers to objects. Therefore, if
+you have a varObj called A, and you set B = A, both B and A now point to
+the same object with the same data. The internal data is stored in the
+public v member, which is accessed like A.v. When defining a varObj, you
+can optionally specify the type of data, such as INPUT_TYPE or
+OUTPUT_TYPE. If the data is of one of these types, you can extract a
+mini-batch from the data and automatically load it into the GPU with the
+getmb() method: A.getmb(). Note, the data stored in the varObj may be a
+sparse matrix in memory, from which a mini-batch is extracted and loaded
+into the GPU.</p>
+
+<p>Cortexsys is also capable of handling both single precision and double
+precision floating point data. This can be useful for some inexpensive
+GPU cards that cannot perform double precision calculations quickly. For
+convenience, the precision(A, defs) function will convert a raw matrix
+or tensor to a particular type depending on what was set during
+initialization in the definitions object.</p>
+
+<h1>
+<a id="layer-structure-and-network-architecture" class="anchor" href="#layer-structure-and-network-architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Layer Structure and Network Architecture</h1>
+
+<p>Neural networks in Cortexsys are divided up into layers. Each layer may
+be of a different type, such as “fully connected” or “LSTM”. This is
+defined in a layers structure that determines the activation function,
+the size of the layer and the type of the layer.</p>
+
+<p>A typical feed-forward, fully connected MNIST classifier network can be
+as shown below. This network has LReLU (leaky rectified linear)
+activation functions and has a softmax output layer with a cross-entropy
+cost function. The size of each layer, set in layers.sz, is a three
+element array. Except for convolutional layers, only the first element
+can be other than 1. For instance, [768 1 1] creates a layer with 768
+LReLU units. A convolutional layer of size [12 5 5] would have 12
+feature maps with kernel sizes of 5x5 pixels each.</p>
+
+<p>layers.af{1} = [];</p>
+
+<p>layers.sz{1} = [input_size 1 1];</p>
+
+<p>layers.typ{1} = defs.TYPES.INPUT;</p>
+
+<p>layers.af{end+1} = LReLU(defs, defs.COSTS.SQUARED_ERROR);</p>
+
+<p>layers.sz{end+1} = [768 1 1];</p>
+
+<p>layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;</p>
+
+<p>layers.af{end+1} = LReLU(defs, defs.COSTS.SQUARED_ERROR);</p>
+
+<p>layers.sz{end+1} = [256 1 1];</p>
+
+<p>layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;</p>
+
+<p>layers.af{end+1} = softmax(defs, defs.COSTS.CROSS_ENTROPY);</p>
+
+<p>layers.sz{end+1} = [output_size 1 1];</p>
+
+<p>layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;</p>
+
+<p>In contrast to some approaches, the input data is represented as layer
+1, and is effectively just another layer in the network.</p>
+
+<p>It is possible for layers other than the output layer to have a cost
+function. This is necessary when layer-by-layer pre-training is being
+used, so that each layer can be trained as an unsupervised auto-encoder.</p>
+
+<h3>
+<a id="visualizing-the-network" class="anchor" href="#visualizing-the-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualizing the Network</h3>
+
+<p>The connectivity, type and size of the layers can be visualized with the
+nnShow method located in the nn_gui folder. Simply pass nnShow with a
+figure number, the layers structure and the definitions object.</p>
+
+<p>nnShow(123, layers, defs);</p>
+
+<p>For the recurrent net example, the following plot is generated:</p>
+
+<p><img src="media/image4.wmf" alt="">{width="4.583333333333333in" height="3.4375in"}</p>
+
+<p>Figure 1: Diagram of the recurrent net example. The dimensionality of
+the weights is shown, along with a blue ellipse indicating that the
+middle layer with hyperbolic tangent activation function is recurrent.
+The width of the layers represents the number of units in the layer.</p>
+
+<h1>
+<a id="training-parameters" class="anchor" href="#training-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Training Parameters</h1>
+
+<p>A variety of settings exist that control how the network is trained.
+Examples include the learning rate, dropout regularization, sparsity
+penalties, tied weights, etc. These parameters must be defined in a
+structure and then passed to the nnLayers object when the network object
+is created (to the constructor). In general, the values of these
+hyper-parameters are not known in advance, and it is best to play with
+different values to get a feeling for what works best.</p>
+
+<p>% Training parameters</p>
+
+<p>params.maxIter = 1000; % How many iterations to train for</p>
+
+<p>params.miniBatchSize = 128; <strong>% set size of mini-batches</strong></p>
+
+<p>% Regularization parameters</p>
+
+<p>params.maxnorm = 0; <strong>% enable max norm regularization if ~= 0</strong></p>
+
+<p>params.lambda = 1; <strong>% enable L2 regularization if ~= 0</strong></p>
+
+<p>params.alphaTau = 0.25*params.maxIter; <strong>% Learning rate decay</strong></p>
+
+<p>params.denoise = 0.25; <strong>% enable input denoising if ~= 0</strong></p>
+
+<p>params.dropout = 0.6; <strong>% enable dropout regularization if ~= 0</strong></p>
+
+<p>params.tieWeights = false; <strong>% enable tied weights for autoencoder?</strong></p>
+
+<p>params.beta_s = 0; <strong>% Strength of sparsity penalty; set to 0 to
+disable</strong></p>
+
+<p>params.rho_s0 = 0; <strong>% Target hidden unit activation for sparsity
+penalty</strong></p>
+
+<p>% Learning rate parameters</p>
+
+<p>params.momentum = 0.9; <strong>% Momentum for stochastic gradient descent</strong></p>
+
+<p>params.alpha = 0.01; <strong>% Learning rate for SGD</strong></p>
+
+<p>params.rho = 0.95; <strong>% AdaDelta hyperparameter</strong></p>
+
+<p>params.eps = 1e-6; <strong>% AdaDelta hyperparameter</strong></p>
+
+<p>% Conjugate gradient parameters</p>
+
+<p>params.cg.N = 10; <strong>% Max CG iterations before reset</strong></p>
+
+<p>params.cg.sigma0 = 0.01; <strong>% CG Secant line search parameter</strong></p>
+
+<p>params.cg.jmax = 10; <strong>% Maximum CG Secant iterations</strong></p>
+
+<p>params.cg.eps = 1e-4; <strong>% Update threshold for CG</strong></p>
+
+<p>params.cg.mbIters = 10; <strong>% How many CG iterations per minibatch?</strong></p>
+
+<p>If the data is time series data, where each time step is stored in a
+different cell in a cell array, getmb() extracts the mini-batch and
+converts it into a 3D tensor, where the third dimension is time.</p>
+
+<h1>
+<a id="creating-a-network-object" class="anchor" href="#creating-a-network-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating a Network Object</h1>
+
+<p>Once the initialization object, layer topology, input and output data
+and training parameters are defined, the neural network object can be
+created. This object ties together all of these aspects and represents
+everything about the neural net. It is also used to store some
+persistent data during training, such as layer activations and dropout
+masks.</p>
+
+<p>The nnLayers object stores the layer structure, as well as references to
+the input and output data, and all of the parameters associated with
+training. It also has the job of initializing the layer weights. The
+weights and biases are also stored in this object.</p>
+
+<p>The nnLayers object expects one structure containing the layers,
+including another containing parameters for training. It can optionally
+accept the input and output data objects and initial weights and biases.
+For example, the object can be created and the weights and biases
+initialized with the following code:</p>
+
+<p>nn = nnLayers(params, layers, X, Y, {}, {}, defs);</p>
+
+<p>nn.initWeightsBiases();</p>
+
+<p>Or, to use your own initial weights and biases, you can pass nnLayers W
+and b at creation:</p>
+
+<p>nn = nnLayers(params, layers, X, Y, W, b, defs);</p>
+
+<p>Keep in mind, the input and target data, X and Y, could be the same
+varObj to save memory—as in the case of an auto-encoder.</p>
+
+<h1>
+<a id="training-a-neural-network" class="anchor" href="#training-a-neural-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Training a Neural Network</h1>
+
+<p>Once you have defined your nnLayers object, you can train this network
+using one of several optimization algorithms. At this time, stochastic
+mini-batch gradient descent, ADADELTA gradient descent, and stochastic
+mini-batch conjugate gradient with line search is provided.</p>
+
+<p>First, create a function handle to the function that the optimization
+routine will use to compute the gradients for your network. This
+function uses the backpropagation algorithm to compute the gradients of
+the weights and biases with respect to the cost function defined in the
+layers structure.</p>
+
+<p>costFunc = @(nn,r,newRandGen) nnCostFunctionCNN(nn,r,newRandGen);</p>
+
+<p>The function handle takes three arguments: the nnLayers object, the
+mini-batch to use (indicies of data to extract from the data set), and
+whether or not randomly generated elements of the network should be
+re-drawn (e.g. dropout or denoising). The second and third parameters
+are useful for optimization routines that must control the stochastic
+nature of the network during training, such as conjugate gradient.</p>
+
+<p>Next, pass the training function to the optimization routine:</p>
+
+<p>gradientDescentAdaDelta(costFunc, nn, defs, Xts, Yts, yts, y, 'Training
+Entire Network');</p>
+
+<p>The routine expects the cost function handle, the nnLayers object and
+the definitions object. Optionally, you can also provide
+cross-validation (test sets) for checking the accuracy during training.
+A figure title is provided so that different stages of training can be
+identified, when plotting the training progress.</p>
+
+<h1>
+<a id="evaluating-a-trained-network" class="anchor" href="#evaluating-a-trained-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Evaluating a Trained Network</h1>
+
+<p>Once a network is trained, it can be used to predict a sequence or
+otherwise generate an output, such as a class prediction.</p>
+
+<h3>
+<a id="non-recurrent-nets" class="anchor" href="#non-recurrent-nets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Non-recurrent Nets</h3>
+
+<p>To compute the output of a network on a set of input data, load the
+appropriate data into the first layer in the nnLayers object and pass it
+to the feedforward function.</p>
+
+<p>nn.A{1} = Xts;</p>
+
+<p>nn.Y = Yts;</p>
+
+<p>m = size(Yts.v, 2);</p>
+
+<p>Aout = feedForward(nn, m);</p>
+
+<p>[pred, probs]= predictDeep(A, false, true));</p>
+
+<p>acc = mean(double(pred == yts)) * 100;</p>
+
+<p>feedforward takes the number of examples in the data set, m, and returns
+the output of the final layer. This output can be passed to the
+predictDeep function for evaluating the accuracy of a classifier. The
+predictDeep function simply makes the maximum likelihood prediction.</p>
+
+<h3>
+<a id="recurrent-nets" class="anchor" href="#recurrent-nets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Recurrent Nets</h3>
+
+<p>Evaluating the prediction of a recurrent network is a bit more
+complicated. Please consult the end of the LSTM_RNN example Shakespeare
+generator for more details. However, the feedForwardLSTM method for a
+recurrent net also takes as an argument the particular time step to
+operate on. If you place feedForwardLSTM in a loop, and increment the
+time step <em>t</em>, it will advance the network one time step at a time. For
+this example, the network expects to receive as input the output from
+the previous time step. Thus, in between evaluating time steps, we set
+the input at A{1} to be the previous time step’s output prediction.</p>
+
+<p>for t= 2:T_samp</p>
+
+<p>nn.A{1}.v(:,:,t) = Aout(:,:,t-1); % NOT ACTUALLY DONE THIS WAY</p>
+
+<p>% Step the RNN forward</p>
+
+<p>Aout = feedforwardLSTM(nn, 1, t, false, true);</p>
+
+<p>end</p>
+
+<p>Additionally, there are some details with respect to how a recurrent
+net’s output must be evaluated, in this case. Instead of simply making
+the maximum likelihood prediction, as above, it is necessary to draw (or
+sample) from the probability distribution provided by the network
+prediction. Otherwise, if this process is deterministic, this network
+will make deterministic and uninteresting predictions.</p>
+
+<p>The Matlab randsample function, from the Statistics and Machine Learning
+Toolbox, is used to draw a random sample from the output distribution.
+This choice represents a choice of a character. If this toolbox is not
+available, Octave does have an open source implementation.</p>
+
+<h1>
+<a id="recurrent-networks" class="anchor" href="#recurrent-networks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Recurrent Networks</h1>
+
+<p>Recurrent networks include a time-domain aspect that can operate on a
+sequence of data. For example, the input could be a video, where each
+time step is a different image. Alternatively, each time step could be a
+word or character from a text, such as Shakespeare’s works.</p>
+
+<p>When working with recurrent nets, an additional parameter that sets the
+length of the time sequence must be defined.</p>
+
+<p>params.T = 50; <strong>% Length of sequence is 50 time steps</strong></p>
+
+<p>Keep in mind, time series data is actually represented as a sequence of
+length T+2 (see Data Representations).</p>
+
+<p>Another parameter, T~OS~, controls whether the initial output of the net
+is factored into the training and the computed cost. For example, it may
+not be helpful to expect a Shakespeare sequence generator to accurately
+predict an entire sentence of text based only on the first character in
+the sentence. In this case, if T~OS~ is not zero, the first <em>n</em> time
+steps will not count toward the network training. This gives you the
+ability to “prime” the net with a sequence before optimizing the
+predicted sequence.</p>
+
+<p>params.Tos = 5; <strong>% Length of sequence to ignore when training</strong></p>
+
+<h1>
+<a id="data-representations" class="anchor" href="#data-representations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Representations</h1>
+
+<p>Generally speaking, there are three types of input, output and
+activation layer data. Again, this data is commonly stored in a varObj
+object.</p>
+
+<ol>
+<li><p>2D, <em>n</em> x <em>m</em> matrix for non-recurrent, non-convolutional data</p></li>
+<li><p>4D <em>k~1~</em> x <em>k~2~</em> x <em>n</em> x <em>m</em> tensor for non-recurrent,
+convolutional data</p></li>
+<li>
+<p>1D Cell array (with <em>t</em> elements) of 2D <em>n</em> x <em>m</em> matrices for
+recurrent, time-domain data</p>
+
+<p>a.  This is converted internally to an <em>n</em> x <em>m</em> x <em>t</em> tensor by
+    the varObj::getmb() method.</p>
+</li>
+<li><p>1D Cell array (with <em>t</em> elements) of 4D <em>k~1~</em> x <em>k~2~</em> x <em>n</em> x <em>m</em>
+tensors for recurrent, time-domain data that is
+convolutional/image/feature map data.</p></li>
+</ol>
+
+<p>In the above, <strong><em>m</em></strong> is the index of the training example (m = number
+of training examples or mini-batch size). <strong><em>n</em></strong> is the dimensionality
+of the data or number of feature maps (convolutional net). <strong><em>t</em></strong> is
+the time step of the sequence. For convolutional/image data, <strong><em>k~1~</em></strong>
+and <strong><em>k~2~</em></strong> are the dimensions of the image or convolutional kernel.</p>
+
+<h3>
+<a id="non-time-series-data" class="anchor" href="#non-time-series-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Non-time Series Data</h3>
+
+<p>For example, the MNIST set would be a 2D matrix of 784 x 60000.
+Represented to a convolutional net, MNIST data would be 28 x 28 x 1 x
+60000 (784 = 28^2^). The output of a convolutional layer with 5 feature
+maps and 5x5 kernels could be 23 x 23 x 5 x 60000, if operating directly
+on the MNIST data.</p>
+
+<h3>
+<a id="time-series-data" class="anchor" href="#time-series-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Time Series Data</h3>
+
+<p>For recurrent (time series) data, each time step is stored as an element
+in a 1D cell array. Each element in the cell array is an identically
+sized matrix or tensor (just like as above) representing the data at
+that time step.</p>
+
+<p><em>Keep in mind, time series data is actually represented as a sequence of
+length T+2</em>, where <em>t</em> = 1 is the initial conditions (all zeros) and <em>t</em>
+= T+2 is the ending boundary conditions (all zeros). <em>t</em> = 2 is, in
+fact, the first time step in the series. This is necessary to simplify
+implementation. Since Matlab doesn’t allow zero indexing of arrays, <em>t</em>
+= 0 is not the initial conditions, and so <em>t</em> = 2 must be the first real
+time step in the data.</p>
+
+<h3>
+<a id="sparse-data" class="anchor" href="#sparse-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sparse Data</h3>
+
+<p>The input and output data can be stored in a sparse matrix. This is
+useful when a “one hot” or “n vs. k” representation is used. For
+instance, we can represent the MNIST target data as one of 10 possible
+values (one for each digit), where a 10 dimension vector with a “1” at
+the proper place represents the correct digit. Instead of having a large
+matrix with many zeros, a sparse representation can be used. The
+varObj::getmb() method automatically converts this to a full matrix and
+loads into the GPU, if enabled.</p>
+
+<h1>
+<a id="network-parameter-weight-and-bias-representations" class="anchor" href="#network-parameter-weight-and-bias-representations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Network Parameter (Weight and Bias) Representations</h1>
+
+<h3>
+<a id="non-recurrent-non-convolutional" class="anchor" href="#non-recurrent-non-convolutional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Non-recurrent, Non-convolutional</h3>
+
+<p>The weight and bias parameters define the trained network. For a
+non-recurrent, non-convolutional network, the bias, b, is a column
+vector with dimensionality equal to the number of units in the layer.
+The weights, W, is a matrix with dimensionality n~2~ x n~1~, where n~1~
+is the number of units on the input layer, and n~2~ is the number of the
+connecting layer above. Thus, b has dimensionality n~1~.</p>
+
+<h3>
+<a id="recurrent" class="anchor" href="#recurrent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Recurrent</h3>
+
+<p>For recurrent networks, the weights at every time step are identical.
+Therefore, they have the same shape as for the non-recurrent case.</p>
+
+<h3>
+<a id="convolutional" class="anchor" href="#convolutional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Convolutional</h3>
+
+<p>For convolutional layers, the weights are 4D tensor of <em>k~1~</em> x <em>k~2~</em> x
+<em>n~1~</em> x <em>n~2~</em>, where:</p>
+
+<blockquote>
+<p><em>k~1~</em> x <em>k~2~</em>: kernel dimensions in x and y (convolutional filter)</p>
+
+<p><em>n~1~</em>: number of feature maps in lower layer</p>
+
+<p><em>n~2~</em>: number of feature maps in upper layer</p>
+</blockquote>
+
+<p>It is helpful to think of convolutional weights and feature maps as the
+2D analog of weights in a typical, fully connected net. So for a fully
+connected net, you can imagine that W is actually a <em>1</em> x <em>1</em> x <em>n~2~</em> x
+<em>n~1~</em> tensor, where the first two dimensions are singleton, and give
+simply a scalar weight value. Of course, for a convolutional net, this
+2D “weight” is scanned across the input image or map.</p>
+
+<p>Convolutional units also have biases, which are scalar values added to
+each feature map. Thus, if a layer has <em>n</em> feature maps, it will also
+have an <em>n</em> dimensional bias vector.</p>
+
+<h1>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h1>
+
+<ol>
+<li><p>LeCun, Yann, and Yoshua Bengio. "Convolutional networks for images,
+speech, and time series." <em>The handbook of brain theory and neural
+networks</em> 3361.10 (1995): 1995.</p></li>
+<li><p>Maas, Andrew L., Awni Y. Hannun, and Andrew Y. Ng. "Rectifier
+nonlinearities improve neural network acoustic models." <em>Proc.
+ICML</em>. Vol. 30. 2013.</p></li>
+<li><p>Srivastava, Nitish, et al. "Dropout: A simple way to prevent neural
+networks from overfitting." <em>The Journal of Machine Learning
+Research</em> 15.1 (2014): 1929-1958.</p></li>
+<li><p>Vincent, Pascal, et al. "Stacked denoising autoencoders: Learning
+useful representations in a deep network with a local denoising
+criterion." <em>The Journal of Machine Learning Research</em> 11
+(2010): 3371-3408.</p></li>
+<li><p>Sutskever, Ilya, et al. "On the importance of initialization and
+momentum in deep learning." <em>Proceedings of the 30th international
+conference on machine learning (ICML-13)</em>. 2013.</p></li>
+<li><p>Hochreiter, Sepp, and Jürgen Schmidhuber. "Long short-term memory."
+<em>Neural computation</em> 9.8 (1997): 1735-1780.</p></li>
+<li><p>Hinton, Geoffrey E., and Ruslan R. Salakhutdinov. "Reducing the
+dimensionality of data with neural networks." <em>Science</em> 313.5786
+(2006): 504-507.</p></li>
+<li><p>Ng, Andrew. "Sparse autoencoder." <em>CS294A Lecture notes</em> 72
+(2011): 1-19.</p></li>
+<li><p>Shewchuk, Jonathan Richard. "An introduction to the conjugate
+gradient method without the agonizing pain." (1994).</p></li>
+<li><p>Karpathy, Andrej. "The unreasonable effectiveness of recurrent
+neural networks." (2015).</p></li>
+<li><p>Zeiler, Matthew D. "ADADELTA: an adaptive learning rate method."
+<em>arXiv preprint arXiv:1212.5701</em> (2012).</p></li>
+<li><p>Graves, Alex. <em>Supervised sequence labelling</em>. Springer Berlin
+Heidelberg, 2012.</p></li>
+<li><p>Nguyen A, Yosinski J, Clune J. Deep Neural Networks are Easily
+Fooled: High Confidence Predictions for Unrecognizable Images. In
+Computer Vision and Pattern Recognition (CVPR '15), IEEE, 2015.</p></li>
+<li><p>Christopher, M. Bishop. "Pattern recognition and machine learning."
+Company New York 16.4 (2006): 049901.</p></li>
+<li><p>Hopfield, John J. "Neural networks and physical systems with
+emergent collective computational abilities." Proceedings of the
+national academy of sciences 79.8 (1982): 2554-2558.</p></li>
+<li><p>Rumelhart, David E., Geoffrey E. Hinton, and Ronald J. Williams.
+"Learning representations by back-propagating errors." Cognitive
+modeling 5.3 (1988): 1.</p></li>
+<li><p>McCulloch, Warren S., and Walter Pitts. "A logical calculus of the
+ideas immanent in nervous activity." The bulletin of mathematical
+biophysics 5.4 (1943): 115-133.</p></li>
+</ol>
+
+<p>[^1]: Combining convolutional nets and recurrent nets will be added back
+    into version 3.1.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/joncox123/Cortexsys">Cortexsys</a> is maintained by <a href="https://github.com/joncox123">joncox123</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
